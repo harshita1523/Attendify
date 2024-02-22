@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Panel</title>
+    <link rel="stylesheet" href="/styles/studentPage.css">
+    <!-- Add any other external stylesheets or libraries for icons here -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Add JsBarcode library -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script> -->
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-c6s5MNNRQgcb79xKbEyH6dNlHZId++
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="heading">
+            <h1>Campus Connect!</h1>
+            <!-- <h1>Attendify!</h1> -->
+            <div class="logout-btn">
+                <a href="/login">Logout</a>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="welcome">
+                <h2 style="text-align: center;">Welcome, <%= username %>
+                </h2>
+            </div>
+            <div class="student-info">
+                <!-- <svg class="barcode" id="barcode"></svg> -->
+                <div class="qr-code" id="qrcode"></div>
+                <div class="unregistered-message" id="unregisteredMessage" style="display: none;">
+                    <!-- Message for unregistered students -->
+                    <p>Please register with the teacher to access the QR code.</p>
+                </div>
+
+
+                <h3>Student Information</h3>
+                <ul>
+                    <li><i class="fas fa-user"></i>
+                        <%= username %>
+                    </li>
+                    <li><i class="fas fa-id-badge"></i>
+                        <%= id %>
+                    </li>
+                    <li><i class="fas fa-envelope"></i>
+                        <%= email %>
+                    </li>
+                    <!-- Add other student details here -->
+                </ul>
+            </div>
+            <div class="dashboard-container">
+
+                <!-- <h2>Attendance Data</h2> -->
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Attended Classes</th>
+                            <th>Attendance Dates</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendance-table-body"></tbody>
+                </table>
+
+                <!-- <h2>Total Classes</h2> -->
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Total Days</th>
+                        </tr>
+                    </thead>
+                    <tbody id="total-classes-table-body"></tbody>
+                </table>
+
+                <div class="chart-container">
+                    <canvas id="attendance-chart"></canvas>
+                </div>
+                <div class="subject-details">
+                    <h2>Subject Details</h2>
+                    <ul id="subject-details-list"></ul>
+                </div>
+            </div>
+            
+            <!-- <div class="attendance">
+                 <div id="attendanceChartContainer">
+                    <canvas id="attendanceChart"></canvas>
+                </div> -->
+                <!-- HTML structure for the student interface -->
+                <!--  //chart
+                     //details -->
+                <!-- //datewise attendance 
+                <div id="attendanceContainer">
+                </div>
+                <div id="attendanceDetailsContainer"></div>
+
+            </div> -->
+        </div>
+    </div>
+
+    <script>
+
+        const bhaystatus =<%= status %>;
+        const studentData = {
+            id: '<%= id %>',
+            username: '<%= username %>',
+            email: '<%= email %>',
+            status: '<%= status %>', //is in string not boolean here
+            attendance: {
+                totalClasses: "20",
+                attendedClasses: "15",
+                percentage: "75",
+            }
+        };
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // const studentStatus = `${studentStatus}`;// Assuming this retrieves a boolean
+            const studentStatus = bhaystatus;// Assuming this retrieves a boolean
+            // console.log(studentStatus); // Log the retrieved status
+            const studentId = "<%= id %>";
+            // const studentName ="<%=username%>";
+            const qrCodeDiv = document.getElementById('qrcode');
+            const unregisteredMessageDiv = document.getElementById('unregisteredMessage');
+
+            if (studentStatus === false) {
+                qrCodeDiv.style.display = 'none'; // Hide QR code if status is false
+                unregisteredMessageDiv.style.display = 'block'; // Display message for unregistered students
+            } else {
+
+                const userCode = studentId;
+                // console.log('userCode:', userCode);
+                new QRCode(document.getElementById("qrcode"), {
+                    text: userCode,
+                    width: 200,
+                    height: 200
+                });
+
+                qrCodeDiv.style.display = 'block'; // Display QR code for verified students
+                unregisteredMessageDiv.style.display = 'none'; // Hide the message if student is registered
+            }
+        });
+
+
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="scripts/studentPage.js"></script>
+</body>
+
+</html>
