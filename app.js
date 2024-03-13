@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 var cors = require("cors");
+const path = require('path');
 // var flush=require("connect-flash");
 
 
