@@ -10,7 +10,8 @@ var cors = require("cors");
 
 
 app.set('view engine', 'ejs');
-app.set('views', './views');
+// app.set('views', './views');
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 
 app.use(express.static('public'));
