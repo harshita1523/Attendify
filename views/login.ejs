@@ -18,11 +18,6 @@
         </div>
     <% } %>
     
-    
-    <!-- <div class="login-status" id="loginStatus">
-        <i class="fas" id="statusIcon"></i>
-        <p id="statusMessage"></p>
-    </div> -->
     <h2 class="headingcc">Attendify</h2>
     <div class="wrapper">
         <div class="title-text">
@@ -191,114 +186,6 @@
 
     </script>
         
-    <!-- <script>
-        const loginText = document.querySelector(".title-text .login");
-        const loginForm = document.querySelector("form.login");
-        const loginBtn = document.querySelector(".slide.login");
-        const signupBtn = document.querySelector(".slide.signup");
-        const signupLink = document.querySelector(".signup-link a");
-        signupBtn.onclick = (() => {
-            loginForm.style.marginLeft = "-50%";
-            loginText.style.marginLeft = "-50%";
-        });
-        loginBtn.onclick = (() => {
-            loginForm.style.marginLeft = "0%";
-            loginText.style.marginLeft = "0%";
-        });
-        signupLink.onclick = (() => {
-            signupBtn.click();
-            return false;
-        });
-        const form = document.getElementById('user-form');
-        const loginform = document.querySelector(".login");
-
-        loginform.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const email = loginform.elements['email'].value;
-            const password = loginform.elements['password'].value;
-            // console.log("loginejs: ",email,password);
-            const userData = {
-                email: email,
-                password: password
-            };
-
-            try {
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(userData),
-                }).then(response => {
-                    if (response.ok) {
-
-                        showLoginSuccess();
-
-                    } else {
-                        showLoginFailure();
-                    }
-                })
-                    .catch(error => {
-                        console.error('Error adding attendance:', error);
-                        // Handle any fetch errors, if needed
-                    });
-            }
-        });
-
-        const passwordField = document.getElementById('password');
-        const confirmPasswordField = document.getElementById('confirmPassword');
-        const passwordError = document.getElementById('passwordError');
-        const submitButton = document.getElementById('submitButton');
-
-        function validatePasswords() {
-            const password = passwordField.value;
-            const confirmPassword = confirmPasswordField.value;
-
-            if (password !== confirmPassword) {
-                passwordError.style.display = 'block';
-                submitButton.disabled = true;
-            } else {
-                passwordError.style.display = 'none';
-                submitButton.disabled = false;
-            }
-        }
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            form.submit();
-        });
-
-        confirmPasswordField.addEventListener('input', validatePasswords);
-        passwordField.addEventListener('input', validatePasswords);
-
-        const loginStatus = document.getElementById('loginStatus');
-        const statusIcon = document.getElementById('statusIcon');
-        const statusMessage = document.getElementById('statusMessage');
-
-        function showLoginSuccess() {
-            loginStatus.classList.add('login-success');
-            statusIcon.classList.add('fa-check-circle');
-            statusMessage.textContent = 'Login Successful';
-            setTimeout(() => hideLoginStatus(), 3000); // Hide after 3 seconds
-        }
-
-        function showLoginFailure() {
-            loginStatus.classList.add('login-failure');
-            statusIcon.classList.add('fa-times-circle');
-            statusMessage.textContent = 'Login Failed';
-            setTimeout(() => hideLoginStatus(), 3000); // Hide after 3 seconds
-        }
-
-        function hideLoginStatus() {
-            loginStatus.classList.remove('login-success', 'login-failure');
-            statusIcon.className = 'fas'; // Reset icon
-            statusMessage.textContent = '';
-        }
-
-
-    </script> -->
-
 </body>
 
 </html>

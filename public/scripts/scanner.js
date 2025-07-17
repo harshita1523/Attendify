@@ -1,24 +1,3 @@
-// const selectButton = document.getElementById('selectButton');
-// const studentsTable = document.getElementById('studentsTable');
-// const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-// const bulkCheckboxes = document.querySelectorAll('input.bulkCheckbox[type="checkbox"]');
-
-// // const bulkCheckboxes = document.querySelectorAll('.bulkCheckbox');
-// selectButton.addEventListener('click', function() {
-//   studentsTable.classList.toggle('showBulkCheckboxes');
-//   console.log(bulkCheckboxes);
-
-// });
-
-// console.log(bulkCheckboxes);
-// selectAllCheckbox.addEventListener('change', function() {
-//     console.log(bulkCheckboxes);
-    
-//   bulkCheckboxes.forEach(checkbox => {
-//     checkbox.checked = this.checked;
-//   });
-// });
-// Fetch student data from the backend
 fetch('/students')
 
     .then(response => response.json())
@@ -67,9 +46,6 @@ fetch('/students')
                     const data = await response.json();
                     console.log('User deletion response:', data);
                     location.reload();
-                    // const deletedRow = document.getElementById(`user-${userIdToDelete}`);
-                    // deletedRow.remove();
-                    // Handle response from the backend if needed
 
                 } catch (error) {
                     console.error('Error deleting user:', error);
@@ -187,11 +163,7 @@ function handleQRCodeScan(scannedData, subject) {
                 console.log('Attendance added successfully.');
                 // Handle success, if needed
             } else {
-                // console.log(scannedData,subject);
-                // console.log(scannedData.id);
-                // console.log(scannedData.name);
                 showNotification("Already marked!", "danger");
-                // alert("Already marked!")
                 console.error('Error adding attendance.');
                 // Handle error response, if needed
             }
@@ -215,7 +187,6 @@ async function startScanner(subject, isScannerActive) {
             const cameras = await Instascan.Camera.getCameras();
             if (cameras.length > 0) {
                 scanner.start(cameras[0]);
-                // scannerSection.style.display = 'block';
 
                 scanner.addListener('scan', function (content) {
                     document.getElementById('scannedData').textContent = content;
@@ -236,8 +207,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const startButton = document.getElementById('startButton');
-    // const pauseButton = document.getElementById('pauseButton');
-    // const resumeButton = document.getElementById('resumeButton');
     const endClassButton = document.getElementById('endClassButton');
     const subjectDropdown = document.getElementById('subjectDropdown');
 
@@ -259,32 +228,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-
-    // pauseButton.addEventListener('click', function () {
-    //     // pauseCameraAndDisplayMessage(scannerInstance,isPaused);
-    //     const video = document.getElementById('video');
-    //     if (scannerInstance && !isPaused) {
-    //         // Stop the camera feed when switching away from the scanner
-    //         video.srcObject.getTracks().forEach(track => {
-    //             track.stop();
-    //         });
-    //         activeScanner = false;
-    //         isPaused = true;
-    //         isScannerActive = false;
-
-    //     }
-    // });
-
-    // // Event listener for the 'Resume Scanning' button
-    // resumeButton.addEventListener('click', function () {
-    //     console.log(isPaused)
-    //     if (isPaused) { // Check if scanner is currently paused
-    //         isPaused = false; // Set the resume state
-    //         startScanner(isScannerActive); // Restart the scanner
-    //     }
-    // });
-    // endClassButton.addEventListener('click',stopScanning);
-    // Event listener for the 'End Class' button
     endClassButton.addEventListener('click', async function () {
         const video = document.getElementById('video');
         if (scannerInstance && !isPaused) {
@@ -327,100 +270,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Sample data (replace this with fetched data from the backend)
-// const attendanceData = {
-//     "students": [
-//         {
-//             "id": "12345",
-//             "name": "abc",
-//             "attendance": {
-//                 "2024-01-01": "P",
-//                 "2024-01-02": "P",
-//                 "2024-01-03": "P",
-//                 "2024-01-04": "A",
-//                 "2024-01-05": "A",
-//                 "2024-01-06": "A",
-//                 "2024-01-07": "P",
-//                 "2024-01-08": "A",
-//                 "2024-01-09": "A",
-//                 "2024-01-10": "A",
-//                 "2024-01-11": "P",
-//                 "2024-01-12": "A",
-//                 "2024-01-13": "A",
-//                 "2024-01-14": "A",
-//                 "2024-01-15": "P",
-//                 "2024-01-16": "A",
-//                 "2024-01-17": "A",
-//                 "2024-01-18": "A",
-//                 "2024-01-19": "P",
-//                 "2024-01-20": "A",
-//                 "2024-01-21": "P",
-//                 "2024-01-22": "A",
-//                 "2024-01-23": "A",
-//                 "2024-01-24": "A",
-//                 "2024-01-25": "P",
-//                 "2024-01-26": "A",
-//                 "2024-01-27": "A",
-//                 "2024-01-28": "A",
-//                 "2024-01-29": "P",
-//                 "2024-01-30": "A",
-//                 "2024-12-31": "P"
-//             }
-//         },
-//         {
-//             "id": "45678",
-//             "name": "xyz",
-//             "attendance": {
-//                 "2024-01-01": "A",
-//                 "2024-01-02": "P",
-//                 "2024-01-03": "P",
-//                 "2024-01-04": "A",
-//                 "2024-01-05": "A",
-//                 "2024-01-06": "A",
-//                 "2024-01-07": "P",
-//                 "2024-01-08": "A",
-//                 "2024-01-09": "A",
-//                 "2024-01-10": "A",
-//                 "2024-01-11": "P",
-//                 "2024-01-12": "A"
-//             }
-//         }, {
-//             "id": "45678",
-//             "name": "lalala",
-//             "attendance": {
-//                 "2024-01-01": "P",
-//                 "2024-01-02": "P",
-//                 "2024-01-03": "P",
-//                 "2024-01-04": "A",
-//                 "2024-01-05": "A",
-//                 "2024-01-06": "A",
-//                 "2024-01-07": "P",
-//                 "2024-01-08": "A",
-//                 "2024-01-09": "A",
-//                 "2024-01-10": "A",
-//                 "2024-01-11": "P",
-//                 "2024-01-12": "A"
-//             }
-//         }, {
-//             "id": "45678",
-//             "name": "hululu",
-//             "attendance": {
-//                 "2024-01-01": "P",
-//                 "2024-01-02": "P",
-//                 "2024-01-03": "P",
-//                 "2024-01-04": "P",
-//                 "2024-01-05": "A",
-//                 "2024-01-06": "A",
-//                 "2024-01-07": "P",
-//                 "2024-01-08": "A",
-//                 "2024-01-09": "A",
-//                 "2024-01-10": "A",
-//                 "2024-01-11": "P",
-//                 "2024-01-12": "A"
-//             }
-//         }
-//     ]
-// };
 
 // Function to dynamically create the attendance table
 function createAttendanceTable(data) {
@@ -435,7 +284,6 @@ function createAttendanceTable(data) {
             student.dates.forEach(date => dates.add(date));
         }
     });
-    // console.log(dates);
     // Create table headers for student ID and name
     const srNoHeader = document.createElement('th');
     srNoHeader.textContent = 'Sr No';
@@ -497,10 +345,7 @@ function createAttendanceTable(data) {
 
     return table;
 }
-// document.addEventListener('DOMContentLoaded', function() {
     
-
-
 const fetchAttendance = async () => {
     showLoader();
     const container = document.getElementById('attendanceContainer');
@@ -512,8 +357,6 @@ const fetchAttendance = async () => {
 
         const response = await fetch(`/attendance/${subject}`);
         const data = await response.json();
-        //   displayAttendance();
-
         const attendanceTable = createAttendanceTable(data.students);
         container.appendChild(attendanceTable);
         
@@ -523,7 +366,6 @@ const fetchAttendance = async () => {
     }finally{
         hideLoader();
     }
-    // };
 
 }
 function showNotification(message, type = 'success') {

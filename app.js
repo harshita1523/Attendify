@@ -6,20 +6,16 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 var cors = require("cors");
 const path = require('path');
-// var flush=require("connect-flash");
 
 
 
 app.set('view engine', 'ejs');
-// app.set('views', './views');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 
-// app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Body parser setup
-
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -30,7 +26,6 @@ app.use(session({
   saveUninitialized: true
 }));
 
-// app.use(flush());
 
 const indexRoutes = require('./routes/index');
 app.use('/', indexRoutes);
@@ -85,103 +80,26 @@ app.post('/createUser', async (req, res) => {
         status: status
       };
 
-      // console.log(user);
-      // console.log(user.role);
-      // console.log(user.role==='student');
-      // res.status(200).send('User created successfully' + JSON.stringify(user));
       res.redirect('/login');
-      // if (user.role === 'faculty') {
-      //   res.redirect('/faculty');
-      // } else if (user.role==='student') {
-      //   res.redirect('/student');
-      // } else {
-      //   res.render('login'); // Redirect to a default page or handle other roles
-      // }
-      
     });
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).send('Error creating user');
   }
 });
-// app.post('/login', async (req, res) => {
-//   const { email, password } = req.body;
-//   try {
-//     const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-
-//     if (user.rows.length === 0) {
-//       // Send a JSON response to the frontend indicating login failure
-//       return res.status(401).json({ success: false, message: 'Invalid email or password' });
-//     }
-
-//     const hashedPassword = user.rows[0].password;
-
-//     bcrypt.compare(password, hashedPassword, (err, result) => {
-//       if (err) {
-//         console.error('Error comparing passwords:', err);
-//         return res.status(500).json({ success: false, message: 'Server error' });
-//       }
-
-//       if (!result) {
-//         // Send a JSON response to the frontend indicating login failure
-//         return res.status(401).json({ success: false, message: 'Invalid email or password' });
-//       }
-
-//       const userRole = user.rows[0].role;
-//       const userData = {
-//         id: user.rows[0].id,
-//         name: user.rows[0].name,
-//         email: user.rows[0].email,
-//         role: user.rows[0].role,
-//         status: user.rows[0].status
-//       };
-
-//       req.session.user = userData;
-//       // console.log(user);
-//       // console.log(userData);
-//       // console.log(user.role);
-//       // console.log(typeof(user.role));
-//       // console.log(userData.role=='student');
-
-//       // Check if it's an API request
-//       if (req.headers.accept && req.headers.accept.includes('application/json')) {
-//         // Send a JSON response to the frontend indicating login success
-//         return res.status(200).json({ success: true, userData });
-//       }
-
-//       // Not an API request, continue with your existing redirection logic
-//       if (userRole === 'faculty') {
-//         res.redirect('/faculty');
-//       } else if (userRole === 'student') {
-//         res.redirect('/student');
-//       } else {
-//         res.render('login'); // Redirect to a default page or handle other roles
-//       }
-
-//       console.log("Login successful");
-//     });
-//   } catch (error) {
-//     console.error('Error finding user:', error);
-//     res.status(500).json({ success: false, message: 'Server error' });
-//   }
-// });
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  // console.log(email);
   pool.query('SELECT * FROM users WHERE email = $1', [email], async (error, user) => {
     if (error) {
       console.error('Error finding user:', error);
-      // return res.redirect('/login?error=Server error');
 
       return res.status(500).send('Server error');
     }
 
     if (user.rows.length === 0) {
-      // return res.redirect('/login?error=Invalid email or password');
       return res.status(401).send(`'Invalid email or password user.rows.length' ${user.rows.length}`);
     }
-    // console.log(user);
 
 
     const hashedPassword = user.rows[0].password; // Fetch hashed password from the database
@@ -191,16 +109,11 @@ app.post('/login', async (req, res) => {
       if (err) {
         console.error('Error comparing passwords:', err);
         return res.status(500).send('Server error');
-        // return res.redirect('/login?error=Server error');
       }
 
       if (!result) {
-        // res.redirect('/login',{ success: false, message: 'Invalid email or password' });
         req.session.errorMessage = 'Invalid email or password';
         return res.redirect('/login');
-        // return res.redirect('/login?success=false&message=Invalid email or password');
-
-        // return res.status(401).json({ success: false, message: 'Invalid email or password' });
       }
 
       // Passwords match - authentication successful
@@ -214,7 +127,6 @@ app.post('/login', async (req, res) => {
       };
 
       req.session.user = userData;
-      // console.log(userData.role);
 
       if (userRole === 'faculty') {
 
@@ -232,8 +144,6 @@ const requireLogin = (req, res, next) => {
   if (req.session.user) {
     next();
   } else {
-    // User is not logged in, redirect to the login page or handle as needed
-    // res.redirect('/login',{message:flash('message')}); // Redirect to the login page
     res.redirect('/login');
   }
 };
@@ -247,19 +157,6 @@ app.get('/student', requireLogin, (req, res) => {
   res.render('studentPage', { username: req.session.user.name, id: req.session.user.id, email: req.session.user.email, status: req.session.user.status }); // Assuming 'studentPanel.ejs' is your student interface
 });
 
-
-function isTeacher(req, res, next) {
-  // Assuming user role is stored in the token or session
-
-  const userRole = req.session.user.role; // Get user role from authentication
-  console.log(userRole);
-  // Check if the user is a teacher (or any other role with access)
-  if (userRole === 'faculty') {
-    return next(); // User is a teacher, proceed to the next middleware
-  } else {
-    return res.status(403).json({ message: 'Forbidden' }); // User doesn't have access
-  }
-}
 
 
 
@@ -302,13 +199,7 @@ app.post('/addAttendance', async (req, res) => {
   const month = String(now.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
   const day = String(now.getDate()).padStart(2, '0');
   const date = `${year}-${month}-${day}`;
-  console.log(date);
   const subject = scannedData.subject;
-  // console.log(scannedData);
-  console.log(date);
-  console.log(Date());
-  // console.log(Date().toISOString());
-  // console.log(Date().toISOString().split('T'));
 
   // Check if attendance for this student on this date and subject already exists
   const existingAttendance = await executeQuery(
@@ -334,42 +225,6 @@ app.post('/addAttendance', async (req, res) => {
       });
   }
 });
-// app.use('/attendance', attendanceRoutes);
-// app.get('/attendanceData', (req, res) => {
-//   const { subject } = req.query;
-//   // Use the subject to query the database for attendance data
-//   // Replace this with your database logic
-//   // const attendanceData = /* Logic to retrieve attendance data based on subject */;
-//   res.json(attendanceData);
-// });
-// app.get('/attendance', async (req, res) => {
-//   try {
-//     const students = await db.query("SELECT id, name FROM users WHERE status = true AND role = 'faculty'");
-
-//     const attendanceData = {};
-
-//     for (const student of students) {
-//       const { id } = student;
-//       const attendance = await db.query("SELECT date, attendance_status FROM attendance WHERE student_id = $1 AND subject = $2", [id, 'Maths']);
-
-//       const processedAttendance = {};
-//       attendance.forEach(({ date, attendance_status }) => {
-//         processedAttendance[date] = attendance_status === 'P' ? 'P' : 'A';
-//       });
-
-//       attendanceData[id] = {
-//         id,
-//         name: student.name,
-//         attendance: processedAttendance,
-//       };
-//     }
-
-//     res.json({ students: Object.values(attendanceData) });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
 
 app.get('/attendance/:subject', async (req, res) => {
   try {
@@ -467,26 +322,7 @@ async function getTotalClasses(){
   // console.log(totalClasses)
   return totalClasses;
 }
-// Function to fetch attendance data for a specific student from the database
-// async function getStudentAttendanceFromDB(studentId) {
-//   try {
-//     const attendanceQueryResult = await executeQuery(
-//       "SELECT subject, COUNT(attendance_date) AS attendedClasses, ARRAY_AGG(attendance_date) AS attendanceDates FROM attendance WHERE user_id = $1 GROUP BY subject",
-//       [studentId]
-//     );
-//     const totalClasses=await executeQuery(
-//     "SELECT subject_name AS subject,COUNT(DISTINCT class_date) AS total_day FROM subjects GROUP BY subject_name;",
-//     [subject,total_day]
-//     );
 
-//     console.log(totalClasses);
-
-//     return {attendanceQueryResult,totalClasses};
-//   } catch (error) {
-//     console.error('Error fetching student attendance from DB:', error);
-//     throw new Error('Failed to fetch student attendance');
-//   }
-// }
 async function getStudentAttendanceFromDB(studentId) {
   try {
     const attendanceQueryResult = await executeQuery(
